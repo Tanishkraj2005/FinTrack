@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-function BudgetModal({
+export default function BudgetModal({
   isOpen,
   onClose,
   onSave,
@@ -11,6 +11,8 @@ function BudgetModal({
   useEffect(() => {
     if (existingLimit) {
       setLimit(existingLimit);
+    } else {
+      setLimit("");
     }
   }, [existingLimit]);
 
@@ -27,8 +29,16 @@ function BudgetModal({
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-      <div className="bg-white dark:bg-[#111827] p-6 rounded-2xl w-full max-w-md shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">
+      <div className="relative bg-white dark:bg-[#111827] p-6 rounded-2xl w-full max-w-md shadow-xl">
+
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xl font-bold transition"
+        >
+          ×
+        </button>
+
+        <h2 className="text-xl font-semibold mb-6 text-gray-800 dark:text-white">
           Set Monthly Budget
         </h2>
 
@@ -38,16 +48,18 @@ function BudgetModal({
             placeholder="Enter monthly limit"
             value={limit}
             onChange={(e) => setLimit(e.target.value)}
-            className="px-4 py-2 rounded-lg border"
+            className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#1E293B] text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
-          <button className="bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">
+          <button
+            type="submit"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition shadow-md"
+          >
             Save
           </button>
         </form>
+
       </div>
     </div>
   );
 }
-
-export default BudgetModal;

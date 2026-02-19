@@ -10,6 +10,7 @@ import {
   where,
   onSnapshot,
   orderBy,
+  getDocs,
 } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 
@@ -28,9 +29,9 @@ export default function useTransactions() {
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setTransactions(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+        snapshot.docs.map((docItem) => ({
+          id: docItem.id,
+          ...docItem.data(),
         }))
       );
     });
@@ -39,6 +40,8 @@ export default function useTransactions() {
   }, [currentUser]);
 
   const addTransaction = async (data) => {
+    if (!currentUser) return;
+
     await addDoc(collection(db, "transactions"), {
       ...data,
       uid: currentUser.uid,
@@ -53,5 +56,28 @@ export default function useTransactions() {
     await deleteDoc(doc(db, "transactions", id));
   };
 
-  return { transactions, addTransaction, updateTransaction, deleteTransaction };
+  const resetAllTransactions = async () => {
+    if (!currentUser) return;
+
+    const q = query(
+      collection(db, "transactions"),
+      where("uid", "==", currentUser.uid)
+    );
+
+    const snapshot = await getDocs(q);
+
+    const deletePromises = snapshot.docs.map((docItem) =>
+      deleteDoc(doc(db, "transactions", docItem.id))
+    );
+
+    await Promise.all(deletePromises);
+  };
+
+  return {
+    transactions,
+    addTransaction,
+    updateTransaction,
+    deleteTransaction,
+    resetAllTransactions,
+  };
 }

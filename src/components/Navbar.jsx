@@ -1,17 +1,37 @@
 import { useAuth } from "../context/AuthContext";
-import DarkModeToggle from "./DarkModeToggle";
 import { useState } from "react";
+import useTransactions from "../hooks/useTransactions";
+import useBudget from "../hooks/useBudget";
 
 export default function Navbar({ onAdd }) {
-  
   const { currentUser, logout } = useAuth();
+  const { resetAllTransactions } = useTransactions();
+  const { resetBudget } = useBudget();
+
   const [open, setOpen] = useState(false);
 
   const name = currentUser?.displayName || "User";
 
+  const handleReset = async () => {
+    const confirmReset = window.confirm(
+      "Are you sure you want to delete all your data? This action cannot be undone."
+    );
+
+    if (confirmReset) {
+      await resetAllTransactions();
+      await resetBudget();
+      setOpen(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    setOpen(false);
+  };
+
   return (
     <nav className="sticky top-0 z-50 bg-white/80 dark:bg-[#0F172A]/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-8 py-4 flex justify-between items-center">
-      
+
       {/* Logo */}
       <h1 className="text-xl font-bold tracking-tight">
         <span className="text-indigo-600">Fin</span>
@@ -19,7 +39,8 @@ export default function Navbar({ onAdd }) {
       </h1>
 
       <div className="flex items-center gap-6">
-        
+
+        {/* Add Button */}
         <button
           onClick={onAdd}
           className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-sm font-medium transition"
@@ -27,33 +48,38 @@ export default function Navbar({ onAdd }) {
           + Add
         </button>
 
-        <DarkModeToggle />
+        {/* User Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setOpen(!open)}
+            className="font-medium text-gray-800 dark:text-white"
+          >
+            {name}
+          </button>
 
-        <div className="flex items-center gap-3 text-sm">
-          <span className="text-gray-500 dark:text-gray-400">
-            {/* {currentUser?.email} */}
-          </span>
-          <div className="relative">
-            <button
-              onClick={() => setOpen(!open)}
-              className="font-medium"
-            >
-              {name}
-            </button>
+          {open && (
+            <div className="absolute right-0 mt-2 bg-white dark:bg-[#111827] shadow-xl rounded-xl p-2 w-40 border border-gray-200 dark:border-gray-700">
 
-            {open && (
-              <div className="absolute right-0 mt-2 bg-white dark:bg-[#111827] shadow-lg rounded-xl p-2">
-                <button
-                  onClick={logout}
-                  className="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-</div>
+              {/* Reset Button */}
+              <button
+                onClick={handleReset}
+                className="block w-full text-left px-4 py-2 text-yellow-600 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm"
+              >
+                Reset Data
+              </button>
 
+              {/* Logout Button */}
+              <button
+                onClick={handleLogout}
+                className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm"
+              >
+                Logout
+              </button>
+
+            </div>
+          )}
         </div>
+
       </div>
     </nav>
   );

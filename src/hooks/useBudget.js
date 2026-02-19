@@ -8,6 +8,8 @@ import {
   addDoc,
   updateDoc,
   doc,
+  getDocs,
+  deleteDoc,
 } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 
@@ -40,7 +42,7 @@ export default function useBudget() {
     });
 
     return unsubscribe;
-  }, [currentUser]);
+  }, [currentUser, currentMonth, currentYear]);
 
   const setMonthlyBudget = async (limit) => {
     if (!currentUser) return;
@@ -59,5 +61,22 @@ export default function useBudget() {
     }
   };
 
-  return { budget, setMonthlyBudget };
+  const resetBudget = async () => {
+    if (!currentUser) return;
+
+    const q = query(
+      collection(db, "monthlyBudget"),
+      where("uid", "==", currentUser.uid)
+    );
+
+    const snapshot = await getDocs(q);
+
+    const deletePromises = snapshot.docs.map((docItem) =>
+      deleteDoc(doc(db, "monthlyBudget", docItem.id))
+    );
+
+    await Promise.all(deletePromises);
+  };
+
+  return { budget, setMonthlyBudget, resetBudget };
 }
