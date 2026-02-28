@@ -7,7 +7,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithRedirect } from "firebase/auth";
 import { googleProvider } from "../firebase/firebase";
 
 const AuthContext = createContext();
@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   function signInWithGoogle() {
-    return signInWithPopup(auth, googleProvider);
+    return signInWithRedirect(auth, googleProvider);
   }
 
   function register(email, password) {

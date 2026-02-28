@@ -4,7 +4,7 @@ import { updateProfile } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
-  const { register } = useAuth();
+  const { register, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -128,6 +128,28 @@ export default function Register() {
             Register
           </button>
         </form>
+
+        <button
+          type="button"
+          onClick={async () => {
+            try {
+              await signInWithGoogle();
+              navigate("/");
+            } catch (error) {
+              alert(error.message);
+            }
+          }}
+          className="flex items-center justify-center gap-3 w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f2937] text-gray-700 dark:text-gray-200 py-2.5 mt-4 rounded-xl hover:bg-gray-50 dark:hover:bg-[#2b3545] transition shadow-sm"
+        >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google"
+            className="w-5 h-5"
+          />
+          <span className="font-medium">
+            Continue with Google
+          </span>
+        </button>
 
         <p className="mt-4 text-center">
           Already have an account?{" "}
