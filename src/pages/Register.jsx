@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { updateProfile } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
-  const { register, signInWithGoogle } = useAuth();
+  const { register, signInWithGoogle, currentUser } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
 
   const [form, setForm] = useState({
     firstName: "",

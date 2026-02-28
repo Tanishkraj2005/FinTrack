@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
 
-  const { login, signInWithGoogle } = useAuth();   // ✅ correct
+  const { login, signInWithGoogle, currentUser } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,27 +66,27 @@ export default function Login() {
             Login
           </button>
         </form>
-<button
-  type="button"
-  onClick={async () => {
-    try {
-      await signInWithGoogle();
-      navigate("/");
-    } catch (error) {
-      alert(error.message);
-    }
-  }}
-  className="flex items-center justify-center gap-3 w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f2937] text-gray-700 dark:text-gray-200 py-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-[#2b3545] transition shadow-sm"
->
-  <img
-    src="https://www.svgrepo.com/show/475656/google-color.svg"
-    alt="Google"
-    className="w-5 h-5"
-  />
-  <span className="font-medium">
-    Continue with Google
-  </span>
-</button>
+        <button
+          type="button"
+          onClick={async () => {
+            try {
+              await signInWithGoogle();
+              navigate("/");
+            } catch (error) {
+              alert(error.message);
+            }
+          }}
+          className="flex items-center justify-center gap-3 w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f2937] text-gray-700 dark:text-gray-200 py-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-[#2b3545] transition shadow-sm"
+        >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google"
+            className="w-5 h-5"
+          />
+          <span className="font-medium">
+            Continue with Google
+          </span>
+        </button>
 
         <p className="mt-4 text-center">
           No account?{" "}
