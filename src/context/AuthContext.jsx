@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firebase";
 import {
@@ -6,8 +5,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  signInWithPopup,
 } from "firebase/auth";
-import { signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { googleProvider } from "../firebase/firebase";
 
 const AuthContext = createContext();
@@ -19,7 +18,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   function signInWithGoogle() {
-    return signInWithRedirect(auth, googleProvider);
+    return signInWithPopup(auth, googleProvider);
   }
 
   function register(email, password) {
@@ -35,15 +34,6 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    const handleRedirect = async () => {
-      try {
-        await getRedirectResult(auth);
-      } catch (error) {
-        console.error("Redirect Error: ", error);
-      }
-    };
-    handleRedirect();
-
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
@@ -52,8 +42,15 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, register, login, logout, signInWithGoogle }}>
-
+    <AuthContext.Provider
+      value={{
+        currentUser,
+        register,
+        login,
+        logout,
+        signInWithGoogle,
+      }}
+    >
       {!loading && children}
     </AuthContext.Provider>
   );

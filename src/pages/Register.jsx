@@ -8,9 +8,7 @@ export default function Register() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser) {
-      navigate("/");
-    }
+    if (currentUser) navigate("/");
   }, [currentUser, navigate]);
 
   const [form, setForm] = useState({
@@ -32,12 +30,8 @@ export default function Register() {
     }
 
     try {
-      const userCredential = await register(
-        form.email,
-        form.password
-      );
+      const userCredential = await register(form.email, form.password);
 
-      // Set display name in Firebase
       await updateProfile(userCredential.user, {
         displayName: `${form.firstName} ${form.lastName}`,
       });
@@ -50,20 +44,15 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 to-purple-600">
-      <div className="bg-white dark:bg-[#111827] p-8 rounded-2xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-6 text-center">
-          Create Account
-        </h2>
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-semibold mb-6 text-center">Create Account</h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
           <input
             type="text"
             placeholder="First Name"
             value={form.firstName}
-            onChange={(e) =>
-              setForm({ ...form, firstName: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, firstName: e.target.value })}
             className="px-4 py-2 rounded-lg border"
             required
           />
@@ -72,9 +61,7 @@ export default function Register() {
             type="text"
             placeholder="Last Name"
             value={form.lastName}
-            onChange={(e) =>
-              setForm({ ...form, lastName: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, lastName: e.target.value })}
             className="px-4 py-2 rounded-lg border"
             required
           />
@@ -83,58 +70,45 @@ export default function Register() {
             type="email"
             placeholder="Email"
             value={form.email}
-            onChange={(e) =>
-              setForm({ ...form, email: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
             className="px-4 py-2 rounded-lg border"
             required
           />
 
-          {/* Password Field */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={form.password}
-              onChange={(e) =>
-                setForm({ ...form, password: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="px-4 py-2 rounded-lg border w-full"
               required
             />
           </div>
 
-          {/* Confirm Password Field */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Confirm Password"
               value={form.confirmPassword}
               onChange={(e) =>
-                setForm({
-                  ...form,
-                  confirmPassword: e.target.value,
-                })
+                setForm({ ...form, confirmPassword: e.target.value })
               }
               className="px-4 py-2 rounded-lg border w-full"
               required
             />
           </div>
 
-          {/* Show Password Toggle */}
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="text-sm text-indigo-600 text-left"
-          >
+          <button type="button" className="text-sm text-indigo-600" onClick={() => setShowPassword(!showPassword)}>
             {showPassword ? "Hide Password" : "Show Password"}
           </button>
 
-          <button className="w-full bg-indigo-600 text-white py-2.5 rounded-xl hover:bg-indigo-700 transition">
+          <button className="w-full bg-indigo-600 text-white py-2.5 rounded-xl">
             Register
           </button>
         </form>
 
+        {/* Google Register */}
         <button
           type="button"
           onClick={async () => {
@@ -145,16 +119,10 @@ export default function Register() {
               alert(error.message);
             }
           }}
-          className="flex items-center justify-center gap-3 w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1f2937] text-gray-700 dark:text-gray-200 py-2.5 mt-4 rounded-xl hover:bg-gray-50 dark:hover:bg-[#2b3545] transition shadow-sm"
+          className="flex items-center justify-center gap-3 w-full border border-gray-300 bg-white text-gray-700 py-2.5 mt-4 rounded-xl shadow-sm"
         >
-          <img
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            alt="Google"
-            className="w-5 h-5"
-          />
-          <span className="font-medium">
-            Continue with Google
-          </span>
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+          <span className="font-medium">Continue with Google</span>
         </button>
 
         <p className="mt-4 text-center">
