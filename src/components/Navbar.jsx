@@ -2,6 +2,7 @@ import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import useTransactions from "../hooks/useTransactions";
 import useBudget from "../hooks/useBudget";
+import DarkModeToggle from "./DarkModeToggle";
 
 export default function Navbar({ onAdd }) {
   const { currentUser, logout } = useAuth();
@@ -47,6 +48,9 @@ export default function Navbar({ onAdd }) {
         >
           + Add
         </button>
+
+        {/* Dark Mode Toggle */}
+        <DarkModeToggle />
 
         {/* User Dropdown */}
         <div className="relative">

@@ -1,16 +1,63 @@
-# React + Vite
+# Personal Finance Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive Personal Finance Tracker application built with React, Vite, Tailwind CSS, and Firebase. This application allows users to securely manage their finances, track income and expenses, set budgets, and visualize their financial data through interactive charts.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **User Authentication**: Secure Login/Register using Firebase Authentication.
+- **Dashboard Overview**: A comprehensive dashboard providing a quick summary of your total balance, income, and expenses.
+- **Transaction Management**: Easily add, edit, and categorize your income and expenses.
+- **Budgeting System**: Set monthly budgets for different categories and track your spending against them.
+- **Interactive Charts**: Visualizations of your financial summaries using Recharts.
+- **Dark Mode Toggle**: Built-in support for light and dark themes for a better user experience.
+- **Responsive Design**: Fully responsive layout that works seamlessly beautifully across desktops, tablets, and mobile devices.
 
-## React Compiler
+## Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend**: React (v19), Vite, Tailwind CSS
+- **Routing**: React Router DOM (v7)
+- **Database & Auth**: Firebase (Firestore, Authentication)
+- **Charts**: Recharts
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js installed on your local machine.
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Tanishkraj2005/FinTrack.git
+   cd FinTrack
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Deployment on Vercel
+
+If you deploy a Single Page Application (like this React + Vite app) on Vercel, client-side routing causes a 404 error when refreshing the page on routes other than the root (`/`). 
+
+This project already includes a `vercel.json` file at the root correctly configured to handle React Router client-side routing on Vercel:
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
+
+This configuration tells Vercel to route all requests to `index.html`, allowing React Router to handle the URL paths appropriately, making the application function perfectly upon deployment.

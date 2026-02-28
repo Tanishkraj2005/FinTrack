@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firebase";
 import {
@@ -18,8 +19,8 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   function signInWithGoogle() {
-  return signInWithPopup(auth, googleProvider);
-}
+    return signInWithPopup(auth, googleProvider);
+  }
 
   function register(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -43,7 +44,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{ currentUser, register, login, logout, signInWithGoogle }}>
-      
+
       {!loading && children}
     </AuthContext.Provider>
   );

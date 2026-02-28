@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { updateProfile } from "firebase/auth";
-import { auth } from "../firebase/firebase";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
