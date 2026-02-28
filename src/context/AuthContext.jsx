@@ -7,7 +7,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { signInWithRedirect } from "firebase/auth";
+import { signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { googleProvider } from "../firebase/firebase";
 
 const AuthContext = createContext();
@@ -35,6 +35,15 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
+    const handleRedirect = async () => {
+      try {
+        await getRedirectResult(auth);
+      } catch (error) {
+        console.error("Redirect Error: ", error);
+      }
+    };
+    handleRedirect();
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
