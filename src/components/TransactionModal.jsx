@@ -116,7 +116,10 @@ export default function TransactionModal({
               placeholder="e.g., Grocery Shopping"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+              className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700
+                         bg-white dark:bg-gray-800
+                         text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500
+                         focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
             />
           </div>
 
@@ -127,7 +130,10 @@ export default function TransactionModal({
               placeholder="0.00"
               value={form.amount}
               onChange={(e) => setForm({ ...form, amount: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+              className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700
+                         bg-white dark:bg-gray-800
+                         text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500
+                         focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
             />
           </div>
 
@@ -137,10 +143,13 @@ export default function TransactionModal({
               <select
                 value={form.type}
                 onChange={(e) => setForm({ ...form, type: e.target.value, category: "" })}
-                className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none cursor-pointer"
+                className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700
+                           bg-white dark:bg-gray-800
+                           text-gray-800 dark:text-gray-100
+                           focus:ring-2 focus:ring-indigo-500 transition-all outline-none cursor-pointer"
               >
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
+                <option value="income" className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100">Income</option>
+                <option value="expense" className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100">Expense</option>
               </select>
             </div>
 
@@ -149,11 +158,14 @@ export default function TransactionModal({
               <select
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none cursor-pointer"
+                className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700
+                           bg-white dark:bg-gray-800
+                           text-gray-800 dark:text-gray-100
+                           focus:ring-2 focus:ring-indigo-500 transition-all outline-none cursor-pointer"
               >
-                <option value="" disabled>Select</option>
+                <option value="" disabled className="bg-white dark:bg-gray-800 text-gray-400">Select category</option>
                 {categories.map((cat, index) => (
-                  <option key={index} value={cat}>{cat}</option>
+                  <option key={index} value={cat} className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100">{cat}</option>
                 ))}
               </select>
             </div>
@@ -165,7 +177,11 @@ export default function TransactionModal({
               type="date"
               value={form.date}
               onChange={(e) => setForm({ ...form, date: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+              className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700
+                         bg-white dark:bg-gray-800
+                         text-gray-800 dark:text-gray-100
+                         [color-scheme:light] dark:[color-scheme:dark]
+                         focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
             />
           </div>
 

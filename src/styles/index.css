@@ -14,7 +14,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -32,7 +31,6 @@ body {
   @apply bg-gray-400 dark:bg-gray-600;
 }
 
-/* Glassmorphism Styles */
 .glass {
   @apply bg-white/70 dark:bg-darksurface/60 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-xl;
 }
@@ -45,7 +43,6 @@ body {
   @apply shadow-2xl -translate-y-1;
 }
 
-/* Subtle glow for dark mode */
 .dark .glass-card::before {
   content: '';
   position: absolute;
@@ -62,7 +59,6 @@ body {
   margin-top: 2rem;
 }
 
-/* Animation delay utilities */
 .animation-delay-2000 {
   animation-delay: 2s;
 }
