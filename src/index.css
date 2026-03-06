@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-background dark:bg-darkbg text-gray-800 dark:text-gray-200 transition-colors duration-300;
+  background: #F8FAFC;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
 }
-

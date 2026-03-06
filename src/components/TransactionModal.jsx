@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import { Timestamp } from "firebase/firestore";
+import { motion } from "framer-motion";
+import { X } from "lucide-react";
 
 export default function TransactionModal({
   isOpen,
@@ -80,93 +82,104 @@ export default function TransactionModal({
       : expenseCategories;
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="relative bg-white dark:bg-[#111827] p-6 rounded-2xl shadow-xl w-full max-w-md">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
 
-        {/* Close Button */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        className="relative w-full max-w-md glass-card bg-white/90 dark:bg-gray-900/90 p-6 md:p-8 shadow-2xl border border-white/20 dark:border-gray-700/50 rounded-3xl"
+      >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xl font-bold"
+          className="absolute top-6 right-6 p-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-500 transition-colors"
         >
-          ×
+          <X className="w-5 h-5" />
         </button>
 
-        <h2 className="text-xl font-semibold mb-6">
-          {editData ? "Edit Transaction" : "Add Transaction"}
+        <h2 className="text-2xl font-bold mb-6 tracking-tight text-gray-900 dark:text-gray-100">
+          {editData ? "Edit Transaction" : "New Transaction"}
         </h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">Title</label>
+            <input
+              type="text"
+              placeholder="e.g., Grocery Shopping"
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
+              className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+            />
+          </div>
 
-          <input
-            type="text"
-            placeholder="Title"
-            value={form.title}
-            onChange={(e) =>
-              setForm({ ...form, title: e.target.value })
-            }
-            className="px-4 py-2 rounded-lg border"
-          />
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">Amount (₹)</label>
+            <input
+              type="number"
+              placeholder="0.00"
+              value={form.amount}
+              onChange={(e) => setForm({ ...form, amount: e.target.value })}
+              className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+            />
+          </div>
 
-          <input
-            type="number"
-            placeholder="Amount"
-            value={form.amount}
-            onChange={(e) =>
-              setForm({ ...form, amount: e.target.value })
-            }
-            className="px-4 py-2 rounded-lg border"
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">Type</label>
+              <select
+                value={form.type}
+                onChange={(e) => setForm({ ...form, type: e.target.value, category: "" })}
+                className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none cursor-pointer"
+              >
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </div>
 
-          {/* Type Dropdown */}
-          <select
-            value={form.type}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                type: e.target.value,
-                category: "", // reset category when type changes
-              })
-            }
-            className="px-4 py-2 rounded-lg border"
-          >
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-          </select>
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">Category</label>
+              <select
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none cursor-pointer"
+              >
+                <option value="" disabled>Select</option>
+                {categories.map((cat, index) => (
+                  <option key={index} value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-          {/* Category Dropdown */}
-          <select
-            value={form.category}
-            onChange={(e) =>
-              setForm({ ...form, category: e.target.value })
-            }
-            className="px-4 py-2 rounded-lg border"
-          >
-            <option value="">Select Category</option>
-            {categories.map((cat, index) => (
-              <option key={index} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">Date</label>
+            <input
+              type="date"
+              value={form.date}
+              onChange={(e) => setForm({ ...form, date: e.target.value })}
+              className="w-full px-4 py-3 rounded-xl border-none ring-1 ring-gray-200 dark:ring-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+            />
+          </div>
 
-          <input
-            type="date"
-            value={form.date}
-            onChange={(e) =>
-              setForm({ ...form, date: e.target.value })
-            }
-            className="px-4 py-2 rounded-lg border"
-          />
-
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
-            className="bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
+            className="w-full mt-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-indigo-500/30 text-lg"
           >
-            Save
-          </button>
+            {editData ? "Update Transaction" : "Save Transaction"}
+          </motion.button>
 
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 }

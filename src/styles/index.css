@@ -2,20 +2,71 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-html {
+html,
+body {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
-  @apply bg-gray-50 text-gray-800 dark:bg-[#0B1120] dark:text-gray-200 transition-colors duration-300;
+  @apply bg-background dark:bg-darkbg text-gray-800 dark:text-gray-200 transition-colors duration-300 antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Smooth card style */
-.card {
-  @apply bg-white dark:bg-[#111827] rounded-2xl shadow-sm hover:shadow-md transition-all duration-300;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-/* Section spacing */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-600;
+}
+
+/* Glassmorphism Styles */
+.glass {
+  @apply bg-white/70 dark:bg-darksurface/60 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-xl;
+}
+
+.glass-card {
+  @apply glass rounded-2xl transition-all duration-300 relative overflow-hidden;
+}
+
+.glass-card:hover {
+  @apply shadow-2xl -translate-y-1;
+}
+
+/* Subtle glow for dark mode */
+.dark .glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.06), transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .section {
-  @apply mt-8;
+  margin-top: 2rem;
+}
+
+/* Animation delay utilities */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
 }
